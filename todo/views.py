@@ -1,9 +1,14 @@
 # todo/views.py
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Task
+
+
+class CustomLoginView(LoginView):
+    template_name = 'todo/login.html'
 
 
 @login_required
@@ -17,6 +22,7 @@ def task_list(request):
 
     return render(request, 'todo/task_list.html', {'tasks': tasks})
 
+
 @login_required
 def task_create(request):
     if request.method == 'POST':
@@ -25,6 +31,7 @@ def task_create(request):
         Task.objects.create(user=request.user, title=title, description=description)
         return redirect('task_list')
     return render(request, 'todo/task_create.html')
+
 
 @login_required
 def task_update(request, pk):
