@@ -1,0 +1,35 @@
+{% extends "todo/base.html" %}
+
+{% block title %}My To-Do List{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">My Tasks</h1>
+<a href="{% url 'task_create' %}" class="btn btn-primary mb-3">+ Add New Task</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.get_status_display }}</td>
+            <td>
+                <a href="{% url 'task_update' task.id %}" class="btn btn-warning btn-sm">Edit</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No tasks found. Add a new task!</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
